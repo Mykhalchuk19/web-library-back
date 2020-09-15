@@ -1,5 +1,5 @@
-const { omit, path } = require('ramda');
+const { omit } = require('ramda');
 
-const getUserFields = (user) => omit(['password', 'salt'], path(['dataValues'], user));
+const getUserFields = (user) => omit(['password', 'salt'], user);
 
 module.exports = getUserFields;

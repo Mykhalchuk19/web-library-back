@@ -4,10 +4,9 @@ const router = express.Router();
 const jsonParser = express.json();
 const { UserController } = require('../controllers');
 
-console.log(UserController);
+const { createUser, authenticateUser } = UserController;
 
-const { createUser } = UserController;
-
-router.post('/signin', jsonParser, createUser);
+router.post('/signup', jsonParser, createUser);
+router.post('/signin', jsonParser, authenticateUser);
 
 module.exports = router;

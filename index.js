@@ -4,7 +4,7 @@ const path = require('path');
 const cors = require('cors');
 const Knex = require('knex');
 const { Model } = require('objection');
-const { UserRouter: usRouter } = require('./src/routes');
+const { UserRouter, AuthRouter } = require('./src/routes');
 
 const app = express();
 const knexFile = require('./knexfile');
@@ -18,7 +18,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/user', usRouter);
+app.use('/user', UserRouter);
+app.use('/auth', AuthRouter);
 
 const port = process.env.PORT || 3000;
 

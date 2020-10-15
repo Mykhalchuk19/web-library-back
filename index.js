@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/user', UserRouter);
+app.use('/users', UserRouter);
 app.use('/auth', AuthRouter);
 
 const port = process.env.PORT || 3000;

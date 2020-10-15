@@ -41,6 +41,19 @@ class UserController {
       return res.status(400).send('Something went wrong');
     }
   }
+
+  static async deleteUser (req, res) {
+    try {
+      const { id } = req.params;
+      const deleteUser = await UserModel.query().deleteById(id);
+      return res.status(200).send({
+        user: deleteUser,
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(400).send('Something went wrong');
+    }
+  }
 }
 
 module.exports = UserController;

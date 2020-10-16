@@ -2,10 +2,10 @@ module.exports = {
   development: {
     client: 'mysql2',
     connection: {
-      host: '127.0.0.1',
-      user: 'root',
-      password: 'mypassword',
-      database: 'library',
+      host: 'us-cdbr-east-02.cleardb.com',
+      user: 'bd4a07437e8af4',
+      password: '30b76409',
+      database: 'heroku_c2d402c8217e727',
     },
     migrations: {
       directory: './src/database/migrations/',
@@ -16,10 +16,10 @@ module.exports = {
     test: {
       client: 'mysql2',
       connection: {
-        host: '127.0.0.1',
-        user: 'root',
-        password: 'mypassword',
-        database: 'library',
+        host: 'us-cdbr-east-02.cleardb.com',
+        user: 'bd4a07437e8af4',
+        password: '30b76409',
+        database: 'heroku_c2d402c8217e727',
       },
     },
   },

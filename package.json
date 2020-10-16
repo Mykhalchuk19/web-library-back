@@ -8,7 +8,7 @@
     "yarn": "1.22.4"
   },
   "scripts": {
-    "start": "nodemon ./index.js",
+    "start": "node index.js",
     "lint": "eslint './**/*.js'"
   },
   "dependencies": {

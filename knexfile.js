@@ -2,10 +2,10 @@ module.exports = {
   development: {
     client: 'mysql2',
     connection: {
-      host: 'us-cdbr-east-02.cleardb.com',
-      user: 'bd4a07437e8af4',
-      password: '30b76409',
-      database: 'heroku_c2d402c8217e727',
+      host: 'localhost',
+      user: 'root',
+      password: 'mypassword',
+      database: 'weblibrary',
     },
     migrations: {
       directory: './src/database/migrations/',

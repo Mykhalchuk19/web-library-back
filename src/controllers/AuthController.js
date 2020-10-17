@@ -2,6 +2,7 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const { helpers } = require('../utils');
 const { UserModel } = require('../models');
+const secretKey = process.env.APP_KEY || 'mysecretkeyforweblibrary12412412434';
 
 const { getUserFields } = helpers;
 
@@ -13,7 +14,7 @@ class AuthController {
       const newUser = await UserModel.query().insert({
         username, firstname, lastname, email, password: hashPassword, salt,
       });
-      const token = jwt.sign({ username, id: newUser.id }, process.env.APP_KEY);
+      const token = jwt.sign({ username, id: newUser.id }, secretKey);
       return res.status(200).send({
         userData: getUserFields(newUser),
         token,

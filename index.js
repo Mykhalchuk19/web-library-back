@@ -6,7 +6,6 @@ const Knex = require('knex');
 const { Model } = require('objection');
 const { UserRouter, AuthRouter } = require('./src/routes');
 
-
 const app = express();
 const knexFile = require('./knexfile');
 

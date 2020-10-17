@@ -6,21 +6,6 @@ const { UserModel } = require('../models');
 const { getUserFields } = helpers;
 
 class UserController {
-  static async updateUser (req, res) {
-    try {
-      const { userData, id } = res.locals;
-      const user = await UserModel.query().findById(id);
-      if (not(user)) return res.status(400).send('User is not exists');
-      const updatedUser = await user.$query().updateAndFetch(userData);
-      return res.status(200).send({
-        userData: getUserFields(updatedUser),
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(400).send('User is not exists');
-    }
-  }
-
   static async getUsersList (req, res) {
     try {
       const { page, limit = '10' } = req.query;
@@ -38,7 +23,38 @@ class UserController {
       });
     } catch (e) {
       console.log(e);
-      return res.status(400).send('Something went wrong');
+      return res.status(400).json({ error: 'Something went wrong' });
+    }
+  }
+
+  static async getUser (req, res) {
+    try {
+      const { id } = req.params;
+      const user = await UserModel.query().findById(id);
+      if (!user) {
+        return res.status(400).json({ error: 'Such user does not exists' });
+      }
+      return res.status(200).send({
+        userData: getUserFields(user),
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ error: 'Something went wrong' });
+    }
+  }
+
+  static async updateUser (req, res) {
+    try {
+      const { userData, id } = res.locals;
+      const user = await UserModel.query().findById(id);
+      if (not(user)) return res.status(400).send('User is not exists');
+      const updatedUser = await user.$query().updateAndFetch(userData);
+      return res.status(200).send({
+        userData: getUserFields(updatedUser),
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ error: 'User is not exists' });
     }
   }
 
@@ -51,7 +67,20 @@ class UserController {
       });
     } catch (e) {
       console.log(e);
-      return res.status(400).send('Something went wrong');
+      return res.status(400).json({ error: 'Something went wrong' });
+    }
+  }
+
+  static async currentUser (req, res) {
+    try {
+      const { id } = res.locals.userData;
+      const user = await UserModel.query().findById(id);
+      return res.status(200).send({
+        userData: getUserFields(user),
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ error: 'Something went wrong' });
     }
   }
 }

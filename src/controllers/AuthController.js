@@ -20,7 +20,7 @@ class AuthController {
       });
     } catch (error) {
       return res.status(400).json({
-        error: 'Something went wrong',
+        error,
       });
     }
   }
@@ -35,7 +35,7 @@ class AuthController {
     } catch (error) {
       console.log(error);
       return res.status(400).json({
-        error: 'Something went wrong',
+        error,
       });
     }
   }

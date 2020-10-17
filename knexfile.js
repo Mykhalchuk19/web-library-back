@@ -5,7 +5,7 @@ module.exports = {
       host: 'localhost',
       user: 'root',
       password: 'mypassword',
-      database: 'weblibrary',
+      database: 'library',
     },
     migrations: {
       directory: './src/database/migrations/',

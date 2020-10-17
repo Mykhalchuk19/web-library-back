@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { UserModel } = require('../models');
 
+const secretKey = process.env.APP_KEY || 'mysecretkeyforweblibrary12412412434';
+
 const createUserMiddleware = async (req, res, next) => {
   const { username, firstname, lastname, email, password } = req.body;
   if (not(username) || not(firstname) || not(lastname) || not(email) || not(password)) {
@@ -40,7 +42,7 @@ const authUserMiddleware = async (req, res, next) => {
       error: 'Password or username are incorrect',
     });
   }
-  const token = jwt.sign({ username, id: user.id }, process.env.APP_KEY);
+  const token = jwt.sign({ username, id: user.id }, secretKey);
   res.locals.userData = {
     user,
     token,

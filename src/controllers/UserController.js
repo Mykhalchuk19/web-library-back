@@ -10,13 +10,12 @@ class UserController {
     try {
       const { page = 0, limit = 10 } = req.query;
       const validPage = parseInt(page, 10);
-      const offset = (validPage + 1) * limit - limit;
+      const currentLimit = limit * (validPage + 1);
       const count = await UserModel.query().count('id');
       const users = await UserModel
         .query()
         .select('id', 'username', 'firstname', 'lastname', 'email')
-        .limit(parseInt(limit, 10))
-        .offset(parseInt(offset, 10))
+        .limit(parseInt(currentLimit, 10))
         .orderBy('id');
       return res.status(200).send({
         limit,

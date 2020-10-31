@@ -9,7 +9,7 @@ const { UserRouter, AuthRouter } = require('./src/routes');
 const app = express();
 const knexFile = require('./knexfile');
 // for dev you need to use development, for prod - production
-const knex = Knex(knexFile.production);
+const knex = Knex(knexFile.development);
 Model.knex(knex);
 
 app.use(bodyParser.json());

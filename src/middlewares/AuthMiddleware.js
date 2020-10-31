@@ -8,17 +8,20 @@ const secretKey = process.env.APP_KEY || 'mysecretkeyforweblibrary12412412434';
 
 const createUserMiddleware = async (req, res, next) => {
   const { username, firstname, lastname, email, password } = req.body;
+  console.log(username, email)
   if (not(username) || not(firstname) || not(lastname) || not(email) || not(password)) {
     return res.status(400).json({ error: 'You should input all fields' });
   }
-  const user = await UserModel.query().findOne({
+  const userByUsername = await UserModel.query().findOne({
     username,
+  });
+  const userByEmail = await UserModel.query().findOne({
     email,
   });
-  if (user.username === username) {
+  if (userByUsername.username === username) {
     return res.status(400).json({ error: 'Username should be unique' });
   }
-  if (user.email === email) {
+  if (userByEmail.email === email) {
     return res.status(400).json({ error: 'Email should be unique' });
   }
   const salt = 10;
@@ -63,17 +66,17 @@ const authUserMiddleware = async (req, res, next) => {
 const auth = async (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) {
-    return res.status(400).json({
+    return res.status(403).json({
       error: 'You are not authorized',
     });
   }
   const decodedToken = jwt.verify(token, secretKey);
   const { id } = decodedToken;
-  if (req.body.id && req.body.id !== id) {
-    return res.status(400).json({
-      error: 'You are not authorized',
-    });
-  }
+  // if (req.body.id && req.body.id !== id) {
+  //   return res.status(403).json({
+  //     error: 'You are not authorized',
+  //   });
+  // }
 
   const user = await UserModel.query().findById(id);
   if (!user) {

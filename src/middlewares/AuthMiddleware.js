@@ -18,10 +18,10 @@ const createUserMiddleware = async (req, res, next) => {
   const userByEmail = await UserModel.query().findOne({
     email,
   });
-  if (userByUsername.username === username) {
+  if (userByUsername && userByUsername.username === username) {
     return res.status(400).json({ error: 'Username should be unique' });
   }
-  if (userByEmail.email === email) {
+  if (userByEmail && userByEmail.email === email) {
     return res.status(400).json({ error: 'Email should be unique' });
   }
   const salt = 10;

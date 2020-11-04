@@ -8,15 +8,11 @@ const { getUserFields } = helpers;
 class UserController {
   static async getUsersList (req, res) {
     try {
-      const { page = 0, limit = 10 } = req.query;
+      const { page = 0, limit = 10, q = '' } = req.query;
       const validPage = parseInt(page, 10);
       const currentLimit = limit * (validPage + 1);
-      const count = await UserModel.query().count('id');
-      const users = await UserModel
-        .query()
-        .select('id', 'username', 'firstname', 'lastname', 'email')
-        .limit(parseInt(currentLimit, 10))
-        .orderBy('id');
+      const users = await UserModel.getUsers(currentLimit, q);
+      const count = await UserModel.getCount(q);
       return res.status(200).send({
         limit,
         page: parseInt(validPage, 10),
@@ -75,7 +71,7 @@ class UserController {
 
   static async currentUser (req, res) {
     try {
-      const { id } = res.locals.userData;
+      const { id } = res.locals;
       const user = await UserModel.query().findById(id);
       return res.status(200).send({
         userData: getUserFields(user),

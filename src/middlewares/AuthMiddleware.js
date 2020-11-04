@@ -8,7 +8,6 @@ const secretKey = process.env.APP_KEY || 'mysecretkeyforweblibrary12412412434';
 
 const createUserMiddleware = async (req, res, next) => {
   const { username, firstname, lastname, email, password } = req.body;
-  console.log(username, email)
   if (not(username) || not(firstname) || not(lastname) || not(email) || not(password)) {
     return res.status(400).json({ error: 'You should input all fields' });
   }
@@ -72,11 +71,6 @@ const auth = async (req, res, next) => {
   }
   const decodedToken = jwt.verify(token, secretKey);
   const { id } = decodedToken;
-  // if (req.body.id && req.body.id !== id) {
-  //   return res.status(403).json({
-  //     error: 'You are not authorized',
-  //   });
-  // }
 
   const user = await UserModel.query().findById(id);
   if (!user) {
@@ -84,9 +78,7 @@ const auth = async (req, res, next) => {
       error: 'Such user is not exists',
     });
   }
-  res.locals.userData = {
-    id,
-  };
+  res.locals.id = id;
   return next();
 };
 

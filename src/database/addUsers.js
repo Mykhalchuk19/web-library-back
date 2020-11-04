@@ -9,6 +9,7 @@ const createFakeUser = () => ({
   password: bcrypt.hashSync(Math.floor(Math.random() * 100000000).toString(), 10),
   salt: 10,
 });
+// eslint-disable-next-line func-names
 exports.seed = async function(knex) {
   const fakeUsers = [];
   for (let i = 0; i <= 100; i += 1) {

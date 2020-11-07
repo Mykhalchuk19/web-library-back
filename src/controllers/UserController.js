@@ -3,7 +3,8 @@ const { not } = require('ramda');
 const { helpers } = require('../utils');
 const { UserModel } = require('../models');
 
-const { getUserFields } = helpers;
+const { getUserFields, roleHelpers } = helpers;
+const { getPermissionsForRole, getCurrentRole } = roleHelpers;
 
 class UserController {
   static async getUsersList (req, res) {
@@ -32,6 +33,7 @@ class UserController {
       if (!user) {
         return res.status(400).json({ error: 'Such user does not exists' });
       }
+
       return res.status(200).send({
         userData: getUserFields(user),
       });
@@ -73,8 +75,15 @@ class UserController {
     try {
       const { id } = res.locals;
       const user = await UserModel.query().findById(id);
+      const { type } = user;
+      const roleName = getCurrentRole(type);
+      const userData = {
+      ...getUserFields(user),
+        permissions: [...getPermissionsForRole(roleName)],
+      };
+
       return res.status(200).send({
-        userData: getUserFields(user),
+        userData,
       });
     } catch (error) {
       console.log(error);

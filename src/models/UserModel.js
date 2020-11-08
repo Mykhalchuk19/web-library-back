@@ -7,7 +7,7 @@ class UserModel extends Model {
 
   static async getUsers (currentLimit, q) {
     const query = this.query()
-      .select('id', 'username', 'firstname', 'lastname', 'email');
+      .select('id', 'username', 'firstname', 'lastname', 'email', 'type');
     if (q && q.length !== 0) {
       query.whereRaw(`username LIKE '%${q}%'`);
     }

@@ -2,6 +2,7 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const { helpers } = require('../utils');
 const { UserModel } = require('../models');
+
 const secretKey = process.env.APP_KEY || 'mysecretkeyforweblibrary12412412434';
 
 const { getUserFields } = helpers;

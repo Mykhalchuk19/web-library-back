@@ -47,7 +47,6 @@ class UserController {
     try {
       const { userData } = res.locals;
       const { id } = req.params
-      console.log(userData);
       const user = await UserModel.query().findById(id);
       if (not(user)) return res.status(400).send('User is not exists');
       const updatedUser = await user.$query().updateAndFetch(userData);

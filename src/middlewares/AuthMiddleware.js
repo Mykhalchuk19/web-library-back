@@ -69,7 +69,7 @@ const auth = async (req, res, next) => {
       error: 'You are not authorized',
     });
   }
-  const decodedToken = jwt.verify(token, secretKey);
+  const decodedToken = jwt.verify(token.slice(7), secretKey);
   const { id } = decodedToken;
 
   const user = await UserModel.query().findById(id);

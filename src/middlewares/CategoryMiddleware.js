@@ -1,16 +1,21 @@
 const { not } = require('ramda');
+const { CategoryModel } = require('../models');
 
 const createCategoryMiddleware = async (req, res, next) => {
-  const { title, short_description: shortDescription, description, parent_id } = req.body;
+  const { title, short_description: shortDescription, description, parent_id: parentId } = req.body;
   const { id } = res.locals;
   if (not(title)) {
     return res.status(400).json({ error: 'You should input title of category' });
+  }
+  const category = await CategoryModel.query().findOne({ title });
+  if (category) {
+    return res.status(400).json({ error: 'Title should be unique' });
   }
   res.locals.categoryData = {
     title,
     short_description: shortDescription,
     description,
-    parent_id,
+    parent_id: parentId,
     created_by: id,
   };
   return next();

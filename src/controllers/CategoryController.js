@@ -54,7 +54,6 @@ class CategoryController {
                   builder.select('firstname', 'lastname');
               })
               .updateAndFetch(categoryData);
-          console.log(updatedCategory);
           return res.status(200).send({
               category: updatedCategory,
           });
@@ -71,6 +70,19 @@ class CategoryController {
               category: parseInt(id, 10),
           });
       }catch (e) {
+          console.log(e);
+          return res.status(400).json({ error: 'Something went wrong' });
+      }
+  }
+  static async getCategoriesAutocomplete(req, res) {
+      try {
+        const { q = '' } = req.query;
+        const categories = await CategoryModel.getCategories(10, q);
+        const autoCompleteCategories = categories.map(({ title, id }) => ({ label: title, value: id }))
+          return res.status(200).send({
+              autocomplete: autoCompleteCategories
+          })
+      } catch (e) {
           console.log(e);
           return res.status(400).json({ error: 'Something went wrong' });
       }

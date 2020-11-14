@@ -6,7 +6,13 @@ const { CategoryController } = require('../controllers');
 const { CategoryMiddleware, AuthMiddleware, PermissionMiddleware } = require('../middlewares');
 const { modules, actions } = require('../constants');
 
-const { addCategory, getCategoriesList, updateCategory, deleteCategory } = CategoryController;
+const {
+  addCategory,
+  getCategoriesList,
+  updateCategory,
+  deleteCategory,
+  getCategoriesAutocomplete,
+} = CategoryController;
 const { createCategoryMiddleware, updateCategoryMiddleware } = CategoryMiddleware;
 const { auth } = AuthMiddleware;
 const { isPermission } = PermissionMiddleware;
@@ -15,5 +21,6 @@ router.post('/create', jsonParser, auth, isPermission(modules.CATEGORIES, action
 router.get('/', jsonParser, auth, isPermission(modules.CATEGORIES, actions.READ), getCategoriesList);
 router.put('/:id', jsonParser, auth, isPermission(modules.CATEGORIES, actions.UPDATE), updateCategoryMiddleware, updateCategory);
 router.delete('/:id', jsonParser, auth, isPermission(modules.CATEGORIES, actions.DELETE), deleteCategory);
+router.get('/autocomplete', jsonParser, auth, isPermission(modules.CATEGORIES, actions.CREATE), getCategoriesAutocomplete);
 
 module.exports = router;

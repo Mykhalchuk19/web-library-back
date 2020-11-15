@@ -11,4 +11,8 @@ module.exports = [
     name: 'Admin',
     type: 3,
   },
+  {
+    name: 'Super admin',
+    type: 4,
+  },
 ];

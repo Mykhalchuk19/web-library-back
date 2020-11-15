@@ -1,5 +1,6 @@
 const { UserModel } = require('../models');
 const { roleHelpers } = require('../utils/helpers');
+const { roleNames } = require('../constants');
 
 // eslint-disable-next-line consistent-return
 const isPermission = (module, action) => async (req, res, next) => {
@@ -8,7 +9,7 @@ const isPermission = (module, action) => async (req, res, next) => {
   const { type } = user;
   const role = roleHelpers.getCurrentRole(type);
   const havePermission = roleHelpers.getAccessByRole(role, module, action);
-  if (havePermission) {
+  if (role === roleNames.SUPER_ADMIN || havePermission) {
     next();
   } else {
     return res.status(403).json({

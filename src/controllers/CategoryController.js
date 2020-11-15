@@ -76,8 +76,8 @@ class CategoryController {
   }
   static async getCategoriesAutocomplete(req, res) {
       try {
-        const { q = '' } = req.query;
-        const categories = await CategoryModel.getCategories(10, q);
+        const { q = '', id = null } = req.query;
+        const categories = await CategoryModel.getCategories(10, q, id);
         const autoCompleteCategories = categories.map(({ title, id }) => ({ label: title, value: id }))
           return res.status(200).send({
               autocomplete: autoCompleteCategories

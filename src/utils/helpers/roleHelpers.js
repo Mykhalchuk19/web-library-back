@@ -1,10 +1,10 @@
 const { propEq, find, compose, prop } = require('ramda');
 const { permissions } = require('../../resources');
-const { roles } = require('../../constants');
+const { roles, roleNames } = require('../../constants');
 
 const getPermissionsForRole = (role) => compose(
   prop('permissions'),
-  find(propEq('name', role)),
+  find(propEq('name', role === roleNames.SUPER_ADMIN ? roleNames.ADMIN : role)),
 )(permissions);
 
 const getCurrentRole = (type) => compose(

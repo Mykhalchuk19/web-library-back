@@ -5,14 +5,6 @@ class CategoryModel extends Model {
     return 'categories';
   }
 
-  static get modifiers () {
-    return {
-      defaultSelects (builder) {
-        builder.select('id', 'firstName', 'lastName');
-      },
-    };
-  }
-
   static get relationMappings () {
     const UserModel = require('./UserModel');
     return {
@@ -27,7 +19,7 @@ class CategoryModel extends Model {
     };
   }
 
-  static async getCategories (currentLimit, q) {
+  static async getCategories (currentLimit, q, id = null) {
     const query = this
       .query()
       .withGraphFetched('creator')
@@ -37,6 +29,9 @@ class CategoryModel extends Model {
       .select('id', 'title', 'short_description', 'description', 'parent_id');
     if (q && q.length !== 0) {
       query.whereRaw(`title LIKE '%${q}%'`);
+    }
+    if (id) {
+      query.where('id', id);
     }
     query
       .limit(parseInt(currentLimit, 10))

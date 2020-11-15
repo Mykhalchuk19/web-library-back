@@ -7,7 +7,7 @@ const { UserMiddleware, AuthMiddleware, PermissionMiddleware } = require('../mid
 const { modules, actions } = require('../constants');
 
 const { updateUser, getUsersList, deleteUser, getUser, currentUser } = UserController;
-const { updateUserMiddleware, updateProfileMiddleware } = UserMiddleware;
+const { updateUserMiddleware, updateProfileMiddleware, deleteUserMiddleware } = UserMiddleware;
 const { auth } = AuthMiddleware;
 const { isPermission } = PermissionMiddleware;
 
@@ -16,6 +16,6 @@ router.put('/profile', jsonParser, auth, updateProfileMiddleware, updateUser);
 router.get('/', jsonParser, auth, isPermission(modules.USERS, actions.READ), getUsersList);
 router.get('/current-user', jsonParser, auth, currentUser);
 router.get('/:id', jsonParser, auth, isPermission(modules.USERS, actions.READ), getUser);
-router.delete('/:id', jsonParser, auth, isPermission(modules.USERS, actions.DELETE), deleteUser);
+router.delete('/:id', jsonParser, auth, isPermission(modules.USERS, actions.DELETE), deleteUserMiddleware, deleteUser);
 
 module.exports = router;

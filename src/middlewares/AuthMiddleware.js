@@ -3,6 +3,7 @@ const { not, or } = require('ramda');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { UserModel } = require('../models');
+const { userStatuses } = require('../constants');
 
 const secretKey = process.env.APP_KEY || 'mysecretkeyforweblibrary12412412434';
 
@@ -25,9 +26,12 @@ const createUserMiddleware = async (req, res, next) => {
   }
   const salt = 10;
   const hashPassword = bcrypt.hashSync(password, 10);
+  const activationCode = UserModel.generateActivationCode();
   res.locals.userData = {
     salt,
     hashPassword,
+    status: userStatuses.PENDING,
+    activationCode,
   };
   return next();
 };
@@ -52,6 +56,11 @@ const authUserMiddleware = async (req, res, next) => {
   if (!isCorrect) {
     return res.status(400).json({
       error: 'Password or username are incorrect',
+    });
+  }
+  if (user.status !== userStatuses.ACTIVE) {
+    return res.status(403).json({
+      error: 'Your status is not active',
     });
   }
   const token = jwt.sign({ username, id: user.id }, secretKey);

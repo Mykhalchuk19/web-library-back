@@ -1,24 +1,38 @@
 require('dotenv').config();
-const jwt = require('jsonwebtoken');
-const { helpers } = require('../utils');
+const { services, helpers } = require('../utils');
 const { UserModel } = require('../models');
 
-const secretKey = process.env.APP_KEY || 'mysecretkeyforweblibrary12412412434';
-
 const { getUserFields } = helpers;
+const { MailService } = services;
+const mailService = new MailService();
 
 class AuthController {
   static async createUser (req, res) {
     try {
       const { username, firstname, lastname, email } = req.body;
-      const { salt, hashPassword } = res.locals.userData;
-      const newUser = await UserModel.query().insert({
-        username, firstname, lastname, email, password: hashPassword, salt,
+      const { salt, hashPassword, activationCode, status } = res.locals.userData;
+      const user = await UserModel.query().insert({
+        username,
+        firstname,
+        lastname,
+        email,
+        password: hashPassword,
+        salt,
+        status,
+        activation_code: activationCode,
       });
-      const token = jwt.sign({ username, id: newUser.id }, secretKey);
-      return res.status(200).send({
-        userData: getUserFields(newUser),
-        token,
+
+      await mailService.sendMail({
+        from: process.env.GMAIL_USER_NAME,
+        to: email,
+        subject: 'Confirm your account',
+        template: 'confirm',
+        context: {
+          href: `${process.env.FRONT_END_URL}auth/activate-account/${user.id}/${activationCode}`,
+        },
+      });
+      return res.status(200).json({
+        success: 'Check you email address',
       });
     } catch (error) {
       return res.status(400).json({

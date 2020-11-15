@@ -1,8 +1,13 @@
 const { Model } = require('objection');
+const randomstring = require('randomstring');
 
 class UserModel extends Model {
   static get tableName () {
     return 'users';
+  }
+
+  static generateActivationCode (length = 30, charset = 'alphanumeric') {
+    return randomstring.generate({ length, charset });
   }
 
   static async getUsers (currentLimit, q) {

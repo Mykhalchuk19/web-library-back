@@ -6,7 +6,7 @@ class UserModel extends Model {
     return 'users';
   }
 
-  static generateActivationCode (length = 30, charset = 'alphanumeric') {
+  static generateCode (length = 30, charset = 'alphanumeric') {
     return randomstring.generate({ length, charset });
   }
 

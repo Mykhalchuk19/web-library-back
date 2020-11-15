@@ -26,8 +26,8 @@ const createUserMiddleware = async (req, res, next) => {
   }
   const salt = 10;
   const hashPassword = bcrypt.hashSync(password, 10);
-  const activationCode = UserModel.generateActivationCode();
-  const restorePasswordCode = UserModel.generateActivationCode();
+  const activationCode = UserModel.generateCode();
+  const restorePasswordCode = UserModel.generateCode();
   res.locals.userData = {
     salt,
     hashPassword,

@@ -10,6 +10,10 @@ class UserModel extends Model {
     return randomstring.generate({ length, charset });
   }
 
+  static checkActivationCode (userActiveCode, activeCode) {
+    return userActiveCode === activeCode;
+  }
+
   static async getUsers (currentLimit, q) {
     const query = this.query()
       .select('id', 'username', 'firstname', 'lastname', 'email', 'type');

@@ -1,10 +1,15 @@
 require('dotenv').config();
+const jwt = require('jsonwebtoken');
+
 const { services, helpers } = require('../utils');
 const { UserModel } = require('../models');
+const { userStatuses } = require('../constants');
 
 const { getUserFields } = helpers;
 const { MailService } = services;
 const mailService = new MailService();
+
+const secretKey = process.env.APP_KEY || 'mysecretkeyforweblibrary12412412434';
 
 class AuthController {
   static async createUser (req, res) {
@@ -35,6 +40,24 @@ class AuthController {
         success: 'Check you email address',
       });
     } catch (error) {
+      return res.status(400).json({
+        error: 'Something went wrong',
+      });
+    }
+  }
+
+  static async activateAccount (req, res) {
+    try {
+      const { id } = res.locals.userData;
+      const user = await UserModel.query().findById(id);
+      const updatedUser = await user.$query().updateAndFetch({ status: userStatuses.ACTIVE });
+      const token = jwt.sign({ username: updatedUser.username, id: updatedUser.id }, secretKey);
+      return res.status(200).send({
+        userData: getUserFields(updatedUser),
+        token,
+      });
+    } catch (error) {
+      console.log(error);
       return res.status(400).json({
         error: 'Something went wrong',
       });

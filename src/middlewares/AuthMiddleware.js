@@ -36,6 +36,25 @@ const createUserMiddleware = async (req, res, next) => {
   return next();
 };
 
+const activateAccountMiddleware = async (req, res, next) => {
+  const { id, code } = req.body;
+  const user = await UserModel.query().findById(id);
+  if (!user) {
+    return res.status(400).json({
+      error: 'User is not exists',
+    });
+  }
+  if (!UserModel.checkActivationCode(user.activation_code, code)) {
+    return res.status(400).json({
+      error: 'Activation code is incorrect',
+    });
+  }
+  res.locals.userData = {
+    id,
+  };
+  return next();
+};
+
 const authUserMiddleware = async (req, res, next) => {
   const { username, password } = req.body;
   if (or(not(username), not(password))) {
@@ -93,6 +112,7 @@ const auth = async (req, res, next) => {
 
 module.exports = {
   createUserMiddleware,
+  activateAccountMiddleware,
   authUserMiddleware,
   auth,
 };

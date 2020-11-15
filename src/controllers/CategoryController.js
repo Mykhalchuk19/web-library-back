@@ -30,7 +30,7 @@ class CategoryController {
           const categories = await CategoryModel.getCategories(currentLimit, q);
           const count = await CategoryModel.getCount(q);
           return res.status(200).send({
-              limit,
+              limit: parseInt(limit, 10),
               page: parseInt(validPage, 10),
               categories,
               count: count[0]['count(`id`)'],

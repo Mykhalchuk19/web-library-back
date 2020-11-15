@@ -15,7 +15,7 @@ class UserController {
       const users = await UserModel.getUsers(currentLimit, q);
       const count = await UserModel.getCount(q);
       return res.status(200).send({
-        limit,
+        limit: parseInt(limit, 10),
         page: parseInt(validPage, 10),
         users,
         count: count[0]['count(`id`)'],

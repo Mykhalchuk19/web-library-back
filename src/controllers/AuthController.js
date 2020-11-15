@@ -15,7 +15,13 @@ class AuthController {
   static async createUser (req, res) {
     try {
       const { username, firstname, lastname, email } = req.body;
-      const { salt, hashPassword, activationCode, status } = res.locals.userData;
+      const {
+        salt,
+        hashPassword,
+        activationCode,
+        status,
+        restorePasswordCode,
+      } = res.locals.userData;
       const user = await UserModel.query().insert({
         username,
         firstname,
@@ -25,6 +31,7 @@ class AuthController {
         salt,
         status,
         activation_code: activationCode,
+        restore_password_code: restorePasswordCode,
       });
 
       await mailService.sendMail({

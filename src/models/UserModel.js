@@ -14,6 +14,10 @@ class UserModel extends Model {
     return userActiveCode === activeCode;
   }
 
+  static checkResetPasswordCode (userResetPasswordCode, resetPasswordCode) {
+    return userResetPasswordCode === resetPasswordCode;
+  }
+
   static async getUsers (currentLimit, q) {
     const query = this.query()
       .select('id', 'username', 'firstname', 'lastname', 'email', 'type');

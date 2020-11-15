@@ -44,7 +44,7 @@ class AuthController {
         },
       });
       return res.status(200).json({
-        success: 'Check you email address',
+        success: 'Check your email address',
       });
     } catch (error) {
       return res.status(400).json({
@@ -77,6 +77,45 @@ class AuthController {
       return res.status(200).send({
         userData: getUserFields(user),
         token,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({
+        error: 'Something went wrong',
+      });
+    }
+  }
+
+  static async forgotPassword (req, res) {
+    const { email, id, restorePasswordCode } = res.locals.userData;
+    try {
+      await mailService.sendMail({
+        from: process.env.GMAIL_USER_NAME,
+        to: email,
+        subject: 'Reset your password',
+        template: 'resetPassword',
+        context: {
+          href: `${process.env.FRONT_END_URL}auth/reset-password/${id}/${restorePasswordCode}`,
+        },
+      });
+      return res.status(200).json({
+        success: 'Check your email address',
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({
+        error: 'Something went wrong',
+      });
+    }
+  }
+
+  static async resetPassword (req, res) {
+    try {
+      const { id, hashPassword } = res.locals.userData;
+      const user = await UserModel.query().findById(id);
+      await user.$query().updateAndFetch({ password: hashPassword });
+      return res.status(200).json({
+        success: 'Your password was reset successfully',
       });
     } catch (error) {
       console.log(error);

@@ -112,9 +112,49 @@ const auth = async (req, res, next) => {
   return next();
 };
 
+const forgotPasswordMiddleware = async (req, res, next) => {
+  const { email } = req.body;
+  const user = await UserModel.query().findOne({
+    email,
+  });
+  if (!user) {
+    return res.status(400).json({
+      error: 'This email is not exists',
+    });
+  }
+  res.locals.userData = {
+    id: user.id,
+    email: user.email,
+    restorePasswordCode: user.restore_password_code,
+  };
+  return next();
+};
+
+const resetPasswordMiddleware = async (req, res, next) => {
+  const { id, code, password } = req.body;
+  const user = await UserModel.query().findById(id);
+  if (!user) {
+    return res.status(400).json({
+      error: 'This user is not exists',
+    });
+  }
+  if (!UserModel.checkResetPasswordCode(user.restore_password_code, code)) {
+    return res.status(400).json({
+      error: 'Reset password code is incorrect',
+    });
+  }
+  const hashPassword = bcrypt.hashSync(password, 10);
+  res.locals.userData = {
+    id, hashPassword,
+  };
+  return next();
+};
+
 module.exports = {
   createUserMiddleware,
   activateAccountMiddleware,
   authUserMiddleware,
   auth,
+  forgotPasswordMiddleware,
+  resetPasswordMiddleware,
 };

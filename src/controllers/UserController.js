@@ -59,6 +59,25 @@ class UserController {
     }
   }
 
+  static async updateProfile (req, res) {
+    try {
+      const { userData, id } = res.locals;
+      const user = await UserModel.query().findById(id);
+      if (not(user)) return res.status(400).send('User is not exists');
+      const updatedUser = await user.$query().updateAndFetch(userData);
+      const permissions = UserModel.getPermissions(updatedUser.type);
+      return res.status(200).send({
+        userData: {
+          ...getUserFields(updatedUser),
+          permissions
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ error: 'User is not exists' });
+    }
+  }
+
   static async deleteUser (req, res) {
     try {
       const { id } = req.params;
@@ -75,13 +94,7 @@ class UserController {
   static async currentUser (req, res) {
     try {
       const { id } = res.locals;
-      const user = await UserModel.query().findById(id);
-      const { type } = user;
-      const roleName = getCurrentRole(type);
-      const userData = {
-      ...getUserFields(user),
-        permissions: [...getPermissionsForRole(roleName)],
-      };
+      const userData = await UserModel.getUserWithPermissions(id);
 
       return res.status(200).send({
         userData,

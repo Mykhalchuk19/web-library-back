@@ -1,32 +1,32 @@
 const { Model } = require('objection');
 
-class CategoryModel extends Model {
+class BookModel extends Model {
   static get tableName () {
-    return 'categories';
+    return 'books';
   }
 
   static get relationMappings () {
-    const UserModel = require('./UserModel');
+    const FileModel = require('./FileModel');
     return {
-      creator: {
+      file: {
         relation: Model.HasOneRelation,
-        modelClass: UserModel,
+        modelClass: FileModel,
         join: {
-          from: 'categories.created_by',
-          to: 'users.id',
+          from: 'books.file_id',
+          to: 'files.id',
         },
       },
     };
   }
 
-  static async getCategories (currentLimit, q, id = null) {
+  static async getBooks (currentLimit, q, id = null) {
     const query = this
       .query()
-      .withGraphFetched('creator')
-      .modifyGraph('creator', (builder) => {
-        builder.select('firstname', 'lastname');
+      .withGraphFetched('file')
+      .modifyGraph('file', (builder) => {
+        builder.select('original', 'mimetype', 'filename');
       })
-      .select('id', 'title', 'short_description', 'description', 'parent_id');
+      .select('*');
     if (q && q.length !== 0) {
       query.whereRaw(`title LIKE '%${q}%'`);
     }
@@ -49,4 +49,4 @@ class CategoryModel extends Model {
   }
 }
 
-module.exports = CategoryModel;
+module.exports = BookModel;

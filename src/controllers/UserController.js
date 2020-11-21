@@ -3,8 +3,7 @@ const { not } = require('ramda');
 const { helpers } = require('../utils');
 const { UserModel } = require('../models');
 
-const { getUserFields, roleHelpers } = helpers;
-const { getPermissionsForRole, getCurrentRole } = roleHelpers;
+const { getUserFields } = helpers;
 
 class UserController {
   static async getUsersList (req, res) {

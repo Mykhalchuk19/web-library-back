@@ -109,6 +109,7 @@ const auth = async (req, res, next) => {
     });
   }
   res.locals.id = id;
+
   return next();
 };
 

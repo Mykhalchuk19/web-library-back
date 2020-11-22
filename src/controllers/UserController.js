@@ -45,7 +45,7 @@ class UserController {
   static async updateUser (req, res) {
     try {
       const { userData } = res.locals;
-      const { id } = req.params
+      const { id } = req.params;
       const user = await UserModel.query().findById(id);
       if (not(user)) return res.status(400).send('User is not exists');
       const updatedUser = await user.$query().updateAndFetch(userData);
@@ -68,7 +68,7 @@ class UserController {
       return res.status(200).send({
         userData: {
           ...getUserFields(updatedUser),
-          permissions
+          permissions,
         },
       });
     } catch (error) {

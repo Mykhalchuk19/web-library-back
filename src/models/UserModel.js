@@ -1,26 +1,26 @@
 const { Model } = require('objection');
 const randomstring = require('randomstring');
-const getUserFields = require("../utils/helpers/getUserFieldsHelper");
-const { getPermissionsForRole, getCurrentRole } = require("../utils/helpers/roleHelpers");
+const getUserFields = require('../utils/helpers/getUserFieldsHelper');
+const { getPermissionsForRole, getCurrentRole } = require('../utils/helpers/roleHelpers');
 
 class UserModel extends Model {
   static get tableName () {
     return 'users';
   }
 
-  static async getUserWithPermissions(id) {
+  static async getUserWithPermissions (id) {
     const user = await this.query().findById(id);
     const { type } = user;
     const permissions = this.getPermissions(type);
-    return  {
+    return {
       ...getUserFields(user),
       permissions,
-    }
+    };
   }
 
-   static getPermissions(type) {
+  static getPermissions (type) {
     const roleName = getCurrentRole(type);
-    return [...getPermissionsForRole(roleName)]
+    return [...getPermissionsForRole(roleName)];
   }
 
   static generateCode (length = 30, charset = 'alphanumeric') {

@@ -6,7 +6,14 @@ const { UserController } = require('../controllers');
 const { UserMiddleware, AuthMiddleware, PermissionMiddleware } = require('../middlewares');
 const { modules, actions } = require('../constants');
 
-const { updateUser, getUsersList, deleteUser, getUser, currentUser, updateProfile } = UserController;
+const {
+  updateUser,
+  getUsersList,
+  deleteUser,
+  getUser,
+  currentUser,
+  updateProfile,
+} = UserController;
 const { updateUserMiddleware, updateProfileMiddleware, deleteUserMiddleware } = UserMiddleware;
 const { auth } = AuthMiddleware;
 const { isPermission } = PermissionMiddleware;

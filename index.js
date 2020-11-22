@@ -4,7 +4,8 @@ const path = require('path');
 const cors = require('cors');
 const Knex = require('knex');
 const { Model } = require('objection');
-const { UserRouter, AuthRouter, CategoryRouter } = require('./src/routes');
+const multer = require('multer');
+const { UserRouter, AuthRouter, CategoryRouter, BookRouter } = require('./src/routes');
 
 const app = express();
 const knexFile = require('./knexfile');
@@ -18,9 +19,11 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(multer({ dest: 'uploads' }).single('filedata'));
 app.use('/categories', CategoryRouter);
 app.use('/users', UserRouter);
 app.use('/auth', AuthRouter);
+app.use('/books', BookRouter);
 
 const port = process.env.PORT || 3000;
 

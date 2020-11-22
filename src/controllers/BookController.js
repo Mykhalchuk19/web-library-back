@@ -3,33 +3,15 @@ const { FileModel, BookModel } = require('../models');
 class BookController {
   static async addBook (req, res) {
     try {
-      const {
-        title,
-        short_description,
-        city,
-        year,
-        publishing_house,
-        edition,
-        series,
-        category_id,
-      } = req.body;
-      const { id } = res.locals;
-      const filedata = req.file;
-      const fileId = await FileModel.addFile(filedata, id);
-      const book = await BookModel.query().insert({
-        title,
-        short_description,
-        city,
-        year,
-        publishing_house,
-        edition,
-        series,
-        category_id,
+      const { id, file, book } = res.locals;
+      const fileId = await FileModel.addFile(file, id);
+      const createdBook = await BookModel.query().insert({
+        ...book,
         created_by: id,
         file_id: fileId,
       });
       return res.status(200).send({
-        book,
+        book: createdBook,
       });
     } catch (e) {
       console.log(e);
@@ -49,6 +31,24 @@ class BookController {
         page: parseInt(validPage, 10),
         categories,
         count: count[0]['count(`id`)'],
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(400).json({ error: 'Something went wrong' });
+    }
+  }
+
+  static async updateBook (req, res) {
+    try {
+      const { id: bookId } = req.params;
+      const { file, book, fileId } = res.locals;
+      const updatedFileId = await FileModel.updateFile(file, fileId);
+      const updatedBook = await BookModel.query().updateAndFetchById(bookId, {
+        ...book,
+        file_id: updatedFileId,
+      });
+      return res.status(200).send({
+        book: updatedBook,
       });
     } catch (e) {
       console.log(e);

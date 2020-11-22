@@ -14,14 +14,14 @@ class FileModel extends Model {
     return file.id;
   }
 
-  static async editFile (fileData, fileId) {
+  static async updateFile (fileData, fileId) {
     const { originalname: original, mimetype, filename, size } = fileData;
     const file = await this.query().findById(fileId);
     if (file) {
       fs.unlinkSync(`${__dirname}/../../uploads/${file.filename}`);
       console.log('file deleted successfully');
-      await file.query().updateAndFetch({
-        original, mimetype, filename, size
+      await this.query().updateAndFetchById(fileId, {
+        original, mimetype, filename, size,
       });
     }
   }

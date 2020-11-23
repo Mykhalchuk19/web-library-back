@@ -5,6 +5,7 @@ const cors = require('cors');
 const Knex = require('knex');
 const { Model } = require('objection');
 const multer = require('multer');
+const randomstring = require('randomstring');
 const { UserRouter, AuthRouter, CategoryRouter, BookRouter } = require('./src/routes');
 
 const app = express();
@@ -13,13 +14,22 @@ const knexFile = require('./knexfile');
 const knex = Knex(knexFile.production);
 Model.knex(knex);
 
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true,
 }));
+app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(multer({ dest: 'uploads' }).single('filedata'));
+app.use(multer({
+  // dest: 'uploads',
+  storage: multer.diskStorage({ destination: (req, file, cb) => {
+    cb(null, `${__dirname}/uploads/`);
+  },
+  filename: (req, file, cb) => {
+    console.log(file.originalname);
+    cb(null, `${randomstring.generate({ length: 15, charset: 'alphanumeric' })}${file.originalname}`);
+  } }),
+}).single('file'));
 app.use('/categories', CategoryRouter);
 app.use('/users', UserRouter);
 app.use('/auth', AuthRouter);

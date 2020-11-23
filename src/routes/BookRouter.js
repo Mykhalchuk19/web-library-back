@@ -6,7 +6,7 @@ const { BookController } = require('../controllers');
 const { AuthMiddleware, PermissionMiddleware, FileMiddleware, BookMiddleware } = require('../middlewares');
 const { modules, actions } = require('../constants');
 
-const { addBook, getBooksList, updateBook, deleteBook } = BookController;
+const { addBook, getBooksList, updateBook, deleteBook, downloadBook } = BookController;
 const { auth } = AuthMiddleware;
 const { isPermission } = PermissionMiddleware;
 const { isFile } = FileMiddleware;
@@ -43,6 +43,12 @@ router.delete(
   isPermission(modules.BOOKS, actions.DELETE),
   isBook,
   deleteBook,
+);
+
+router.get(
+  '/download/:filename',
+  jsonParser,
+  downloadBook,
 );
 
 module.exports = router;

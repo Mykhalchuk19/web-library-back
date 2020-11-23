@@ -7,6 +7,7 @@ class BookModel extends Model {
 
   static get relationMappings () {
     const FileModel = require('./FileModel');
+    const CategoryModel = require('./CategoryModel');
     return {
       file: {
         relation: Model.HasOneRelation,
@@ -16,17 +17,31 @@ class BookModel extends Model {
           to: 'files.id',
         },
       },
+      category: {
+        relation: Model.HasOneRelation,
+        modelClass: CategoryModel,
+        join: {
+          from: 'books.category_id',
+          to: 'categories.id',
+        },
+      },
     };
   }
 
   static async getBooks (currentLimit, q, id = null) {
     const query = this
       .query()
-      .withGraphFetched('file')
+      .withGraphFetched('[file, category]')
       .modifyGraph('file', (builder) => {
-        builder.select('original', 'mimetype', 'filename');
+        builder.select('filename');
       })
-      .select('*');
+      .modifyGraph('category', (builder) => {
+        builder.select('title');
+      })
+      .select('id', 'title',
+        'short_description', 'city',
+        'year', 'publishing_house',
+        'edition', 'series', 'created_by');
     if (q && q.length !== 0) {
       query.whereRaw(`title LIKE '%${q}%'`);
     }

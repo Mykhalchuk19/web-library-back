@@ -34,6 +34,14 @@ class FileModel extends Model {
       console.log('file deleted successfully');
     }
   }
+
+  static async downloadFile (filename) {
+    let pathFile = null;
+    const file = await this.query().findOne({ filename });
+    console.log(file);
+    if (file) pathFile = `${__dirname}/../../uploads/${filename}`;
+    return pathFile;
+  }
 }
 
 module.exports = FileModel;

@@ -37,11 +37,7 @@ class BookModel extends Model {
       })
       .modifyGraph('category', (builder) => {
         builder.select('title');
-      })
-      .select('id', 'title',
-        'short_description', 'city',
-        'year', 'publishing_house',
-        'edition', 'series', 'created_by');
+      });
     if (q && q.length !== 0) {
       query.whereRaw(`title LIKE '%${q}%'`);
     }

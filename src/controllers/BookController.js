@@ -16,11 +16,7 @@ class BookController {
         })
         .modifyGraph('category', (builder) => {
           builder.select('title');
-        })
-        .select('id', 'title',
-          'short_description', 'city',
-          'year', 'publishing_house',
-          'edition', 'series', 'created_by');
+        });
       return res.status(200).send({
         book: createdBook,
       });
@@ -57,7 +53,14 @@ class BookController {
       const updatedBook = await BookModel.query().updateAndFetchById(bookId, {
         ...book,
         file_id: updatedFileId,
-      });
+      })
+        .withGraphFetched('[file, category]')
+        .modifyGraph('file', (builder) => {
+          builder.select('filename');
+        })
+        .modifyGraph('category', (builder) => {
+          builder.select('title');
+        });
       return res.status(200).send({
         book: updatedBook,
       });

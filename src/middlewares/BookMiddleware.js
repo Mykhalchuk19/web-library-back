@@ -34,6 +34,7 @@ const checkBookFields = async (req, res, next) => {
 
 const checkFileId = async (req, res, next) => {
   const { file_id: fileId } = req.body;
+  console.log(fileId);
   if (!fileId) return res.status(400).send({ error: 'Something went wrong' });
   res.locals.fileId = fileId;
   return next();

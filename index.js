@@ -6,7 +6,7 @@ const Knex = require('knex');
 const { Model } = require('objection');
 const multer = require('multer');
 const randomstring = require('randomstring');
-const { UserRouter, AuthRouter, CategoryRouter, BookRouter } = require('./src/routes');
+const { UserRouter, AuthRouter, CategoryRouter, BookRouter, AuthorRouter } = require('./src/routes');
 
 const app = express();
 const knexFile = require('./knexfile');
@@ -34,6 +34,7 @@ app.use('/categories', CategoryRouter);
 app.use('/users', UserRouter);
 app.use('/auth', AuthRouter);
 app.use('/books', BookRouter);
+app.use('/authors', AuthorRouter);
 
 const port = process.env.PORT || 3000;
 

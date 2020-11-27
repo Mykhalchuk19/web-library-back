@@ -29,6 +29,7 @@ class BookModel extends Model {
   }
 
   static async getBooks (currentLimit, q, id = null) {
+    console.log(q);
     const query = this
       .query()
       .withGraphFetched('[file, category]')
@@ -44,9 +45,6 @@ class BookModel extends Model {
     if (id) {
       query.where('id', id);
     }
-    query
-      .limit(parseInt(currentLimit, 10))
-      .orderBy('id');
     return query;
   }
 

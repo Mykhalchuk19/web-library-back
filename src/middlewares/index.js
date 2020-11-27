@@ -4,6 +4,7 @@ const PermissionMiddleware = require('./PermissionMiddleware');
 const CategoryMiddleware = require('./CategoryMiddleware');
 const FileMiddleware = require('./FileMiddleware');
 const BookMiddleware = require('./BookMiddleware');
+const AuthorMiddleware = require('./AuthorMiddleware');
 
 module.exports = {
   AuthMiddleware,
@@ -12,4 +13,5 @@ module.exports = {
   CategoryMiddleware,
   FileMiddleware,
   BookMiddleware,
+  AuthorMiddleware,
 };

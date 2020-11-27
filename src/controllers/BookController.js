@@ -48,11 +48,17 @@ class BookController {
   static async updateBook (req, res) {
     try {
       const { id: bookId } = req.params;
-      const { file, book, fileId } = res.locals;
-      const updatedFileId = await FileModel.updateFile(file, fileId);
+      const { book, fileId } = res.locals;
+      let updatedFileId = null;
+      const fileData = req.file;
+      if (fileData) {
+        updatedFileId = await FileModel.updateFile(fileData, fileId);
+        await BookModel.query().updateAndFetchById(bookId, {
+          file_id: updatedFileId,
+        });
+      }
       const updatedBook = await BookModel.query().updateAndFetchById(bookId, {
         ...book,
-        file_id: updatedFileId,
       })
         .withGraphFetched('[file, category]')
         .modifyGraph('file', (builder) => {

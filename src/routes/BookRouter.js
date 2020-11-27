@@ -29,7 +29,6 @@ router.put(
   jsonParser,
   auth,
   isPermission(modules.BOOKS, actions.UPDATE),
-  isFile,
   isBook,
   checkBookFields,
   checkFileId,

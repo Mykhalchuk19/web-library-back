@@ -23,6 +23,13 @@ module.exports = [
         update: 0,
         delete: 0,
       },
+      {
+        module: 'authors',
+        read: 1,
+        create: 0,
+        update: 0,
+        delete: 0,
+      },
     ],
   },
   {
@@ -49,6 +56,13 @@ module.exports = [
         update: 1,
         delete: 1,
       },
+      {
+        module: 'authors',
+        read: 1,
+        create: 1,
+        update: 1,
+        delete: 1,
+      },
     ],
   },
   {
@@ -70,6 +84,13 @@ module.exports = [
       },
       {
         module: 'books',
+        read: 1,
+        create: 1,
+        update: 1,
+        delete: 1,
+      },
+      {
+        module: 'authors',
         read: 1,
         create: 1,
         update: 1,

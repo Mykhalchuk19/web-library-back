@@ -3,6 +3,7 @@ const CategoryModel = require('./CategoryModel');
 const FileModel = require('./FileModel');
 const BookModel = require('./BookModel');
 const AuthorModel = require('./AuthorModel');
+const AuthorBookModel = require('./AuthorBookModel');
 
 module.exports = {
   UserModel,
@@ -10,4 +11,5 @@ module.exports = {
   FileModel,
   BookModel,
   AuthorModel,
+  AuthorBookModel,
 };

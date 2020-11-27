@@ -17,6 +17,7 @@ const checkBookFields = async (req, res, next) => {
     edition,
     series,
     category_id: categoryId,
+    author_ids: authorIds,
   } = req.body;
   if (!title || title.length === 0) return res.status(400).json({ error: 'Title is required' });
   res.locals.book = {
@@ -29,6 +30,7 @@ const checkBookFields = async (req, res, next) => {
     series,
     category_id: categoryId,
   };
+  res.locals.authorIds = authorIds;
   return next();
 };
 

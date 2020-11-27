@@ -1,9 +1,9 @@
-const { FileModel, BookModel } = require('../models');
+const { FileModel, BookModel, AuthorBookModel } = require('../models');
 
 class BookController {
   static async addBook (req, res) {
     try {
-      const { id, file, book } = res.locals;
+      const { id, file, book, authorIds } = res.locals;
       const fileId = await FileModel.addFile(file, id);
       const createdBook = await BookModel.query().insert({
         ...book,
@@ -17,6 +17,14 @@ class BookController {
         .modifyGraph('category', (builder) => {
           builder.select('title');
         });
+      for (const authorId of authorIds) {
+        // eslint-disable-next-line no-await-in-loop
+        await AuthorBookModel.query().insert({
+          author_id: authorId,
+          book_id: createdBook.id,
+        });
+      }
+
       return res.status(200).send({
         book: createdBook,
       });

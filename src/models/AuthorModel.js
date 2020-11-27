@@ -12,12 +12,12 @@ class AuthorModel extends Model {
         relation: BookModel.ManyToManyRelation,
         modelClass: BookModel,
         join: {
-          from: 'books.id',
+          from: 'authors.id',
           through: {
-            from: 'authors_books.book_id',
-            to: 'authors_books.author_id',
+            from: 'authors_books.author_id',
+            to: 'authors_books.book_id',
           },
-          to: 'authors.id',
+          to: 'books.id',
         },
       },
     };

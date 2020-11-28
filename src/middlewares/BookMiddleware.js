@@ -17,7 +17,7 @@ const checkBookFields = async (req, res, next) => {
     edition,
     series,
     category_id: categoryId,
-    author_ids: authorIds,
+    authors: authorIds,
   } = req.body;
   if (!title || title.length === 0) return res.status(400).json({ error: 'Title is required' });
   res.locals.book = {
@@ -28,15 +28,14 @@ const checkBookFields = async (req, res, next) => {
     publishing_house: publishingHouse,
     edition,
     series,
-    category_id: categoryId,
+    category_id: typeof parseInt(categoryId, 10) !== 'number' ? null : categoryId,
   };
-  res.locals.authorIds = authorIds;
+  res.locals.authorIds = authorIds.split(',').filter((id) => typeof parseInt(id, 10) === 'number');
   return next();
 };
 
 const checkFileId = async (req, res, next) => {
   const { file_id: fileId } = req.body;
-  console.log(fileId);
   if (!fileId) return res.status(400).send({ error: 'Something went wrong' });
   res.locals.fileId = fileId;
   return next();

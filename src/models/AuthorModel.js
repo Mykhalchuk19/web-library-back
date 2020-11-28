@@ -32,7 +32,7 @@ class AuthorModel extends Model {
       })
       .select('id', 'firstname', 'lastname');
     if (q && q.length !== 0) {
-      query.whereRaw(`title LIKE '%${q}%'`);
+      query.whereRaw(`firstname LIKE '%${q}%' OR lastname LIKE '%${q}%'`);
     }
     if (id) {
       query.where('id', id);

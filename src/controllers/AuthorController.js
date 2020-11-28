@@ -1,5 +1,3 @@
-const { not } = require('ramda');
-
 const { AuthorModel } = require('../models');
 
 class AuthorController {
@@ -65,6 +63,22 @@ class AuthorController {
       await AuthorModel.query().deleteById(id);
       return res.status(200).send({
         author: parseInt(id, 10),
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(400).json({ error: 'Something went wrong' });
+    }
+  }
+
+  static async getAuthorsAutocomplete (req, res) {
+    try {
+      const { q = '', id = null } = req.query;
+      const authors = await AuthorModel.getAuthors(10, q, id);
+      const autoCompleteAuthors = authors.map(({ firstname, lastname, id: authorId }) => (
+        { label: `${firstname} ${lastname}`,
+          value: authorId }));
+      return res.status(200).send({
+        autocomplete: autoCompleteAuthors,
       });
     } catch (e) {
       console.log(e);

@@ -9,14 +9,7 @@ class BookController {
         ...book,
         created_by: id,
         file_id: fileId,
-      })
-        .withGraphFetched('[file, category]')
-        .modifyGraph('file', (builder) => {
-          builder.select('filename');
-        })
-        .modifyGraph('category', (builder) => {
-          builder.select('title');
-        });
+      });
       for (const authorId of authorIds) {
         // eslint-disable-next-line no-await-in-loop
         await AuthorBookModel.query().insert({
@@ -25,8 +18,20 @@ class BookController {
         });
       }
 
+      const bookWithRelations = await BookModel.query().findById(createdBook.id)
+        .withGraphFetched('[file, category, authors]')
+        .modifyGraph('file', (builder) => {
+          builder.select('filename');
+        })
+        .modifyGraph('category', (builder) => {
+          builder.select('title');
+        })
+        .modifyGraph('authors', (builder) => {
+          builder.select('authors.*');
+        });
+
       return res.status(200).send({
-        book: createdBook,
+        book: bookWithRelations,
       });
     } catch (e) {
       console.log(e);
@@ -68,12 +73,15 @@ class BookController {
       const updatedBook = await BookModel.query().updateAndFetchById(bookId, {
         ...book,
       })
-        .withGraphFetched('[file, category]')
+        .withGraphFetched('[file, category, authors]')
         .modifyGraph('file', (builder) => {
           builder.select('filename');
         })
         .modifyGraph('category', (builder) => {
           builder.select('title');
+        })
+        .modifyGraph('authors', (builder) => {
+          builder.select('authors.*');
         });
       return res.status(200).send({
         book: updatedBook,

@@ -52,7 +52,7 @@ class BookModel extends Model {
         builder.select('title');
       })
       .modifyGraph('authors', (builder) => {
-        builder.select('id', 'firstname', 'lastname');
+        builder.select('authors.*');
       });
     if (q && q.length !== 0) {
       query.whereRaw(`title LIKE '%${q}%'`);

@@ -61,7 +61,8 @@ class BookController {
   static async updateBook (req, res) {
     try {
       const { id: bookId } = req.params;
-      const { book, fileId } = res.locals;
+      const { book, fileId, authorIds } = res.locals;
+      await AuthorBookModel.updateAuthorsByBookId(bookId, authorIds);
       let updatedFileId = null;
       const fileData = req.file;
       if (fileData) {
@@ -98,6 +99,7 @@ class BookController {
       const book = await BookModel.query().findById(id);
       await BookModel.query().deleteById(id);
       await FileModel.removeFile(book.file_id);
+      await AuthorBookModel.deleteAuthorsByBookId(id);
       return res.status(200).send({
         book: parseInt(id, 10),
       });

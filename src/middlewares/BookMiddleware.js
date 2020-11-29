@@ -30,7 +30,7 @@ const checkBookFields = async (req, res, next) => {
     series,
     category_id: typeof parseInt(categoryId, 10) !== 'number' ? null : categoryId,
   };
-  res.locals.authorIds = authorIds.split(',').filter((id) => typeof parseInt(id, 10) === 'number');
+  res.locals.authorIds = authorIds.trim().split(',').filter((id) => id !== '' && typeof parseInt(id, 10) === 'number');
   return next();
 };
 

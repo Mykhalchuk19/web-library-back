@@ -7,7 +7,13 @@ const { AuthorController } = require('../controllers');
 const { AuthMiddleware, PermissionMiddleware, AuthorMiddleware } = require('../middlewares');
 const { modules, actions } = require('../constants');
 
-const { createAuthor, getAuthorsList, updateAuthor, deleteAuthor, getAuthorsAutocomplete } = AuthorController;
+const {
+  createAuthor,
+  getAuthorsList,
+  updateAuthor,
+  deleteAuthor,
+  getAuthorsAutocomplete,
+} = AuthorController;
 const { auth } = AuthMiddleware;
 const { isPermission } = PermissionMiddleware;
 const { createAuthorMiddleware, updateAuthorMiddleware } = AuthorMiddleware;

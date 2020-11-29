@@ -80,7 +80,10 @@ class CategoryController {
     try {
       const { q = '', id = null } = req.query;
       const categories = await CategoryModel.getCategories(10, q, id);
-      const autoCompleteCategories = categories.map(({ title, id }) => ({ label: title, value: id }));
+      const autoCompleteCategories = categories.map(({
+        title,
+        id: categoryId,
+      }) => ({ label: title, value: categoryId }));
       return res.status(200).send({
         autocomplete: autoCompleteCategories,
       });

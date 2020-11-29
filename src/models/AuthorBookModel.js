@@ -15,6 +15,7 @@ class AuthorBookModel extends Model {
     for (const authorId of authorIds) {
       const index = relatedAuthorsIds.indexOf(authorId);
       if (index === -1) {
+        // eslint-disable-next-line no-await-in-loop
         await this.addAuthorById(authorId, bookId);
       } else {
         delete relatedAuthorsIds[index];
@@ -32,6 +33,7 @@ class AuthorBookModel extends Model {
 
   static async deleteAuthorsByIds (ids) {
     for (const id of ids) {
+      // eslint-disable-next-line no-await-in-loop
       await this.query().where('author_id', id).delete();
     }
   }

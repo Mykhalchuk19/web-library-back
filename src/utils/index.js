@@ -3,5 +3,5 @@ const services = require('./services');
 
 module.exports = {
   helpers,
-  services
+  services,
 };

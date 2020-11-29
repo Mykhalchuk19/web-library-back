@@ -45,7 +45,7 @@ class AuthorController {
         .$query()
         .withGraphFetched('books')
         .modifyGraph('books', (builder) => {
-          builder.select('title');
+          builder.select('books.id', 'title');
         })
         .updateAndFetch(authorData);
       return res.status(200).send({

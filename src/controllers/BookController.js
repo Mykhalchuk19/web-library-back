@@ -120,6 +120,29 @@ class BookController {
       return res.status(400).json({ error: 'Something went wrong' });
     }
   }
+
+  static async getBookById (req, res) {
+    try {
+      const { id } = req.params;
+      const book = await BookModel.query().findById(id)
+        .withGraphFetched('[file, category, authors]')
+        .modifyGraph('file', (builder) => {
+          builder.select('filename');
+        })
+        .modifyGraph('category', (builder) => {
+          builder.select('title');
+        })
+        .modifyGraph('authors', (builder) => {
+          builder.select('authors.*');
+        });
+      return res.status(200).send({
+        book,
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(400).json({ error: 'Something went wrong' });
+    }
+  }
 }
 
 module.exports = BookController;

@@ -28,7 +28,7 @@ class AuthorModel extends Model {
       .query()
       .withGraphFetched('books')
       .modifyGraph('books', (builder) => {
-        builder.select('title');
+        builder.select('books.id', 'title');
       })
       .select('id', 'firstname', 'lastname');
     if (q && q.length !== 0) {

@@ -24,8 +24,8 @@ router.post(
 
 router.get('/', jsonParser, auth, isPermission(modules.BOOKS, actions.READ), getBooksList);
 
-router.delete(
-  '/:id',
+router.get(
+  '/get/:id',
   jsonParser,
   auth,
   isBook,

@@ -46,7 +46,7 @@ class AuthorModel extends Model {
   static async getCount (q) {
     const count = this.query();
     if (q && q.length !== 0) {
-      count.whereRaw(`title LIKE '%${q}%'`);
+      count.whereRaw(`firstname LIKE '%${q}%' OR lastname LIKE '%${q}%'`);
     }
     count.count('id');
     return count;

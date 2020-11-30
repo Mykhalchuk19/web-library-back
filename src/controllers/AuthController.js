@@ -57,7 +57,10 @@ class AuthController {
     try {
       const { id } = res.locals.userData;
       const user = await UserModel.query().findById(id);
-      const updatedUser = await user.$query().updateAndFetch({ status: userStatuses.ACTIVE });
+      const updatedUser = await user.$query().updateAndFetch({
+        status: userStatuses.ACTIVE,
+        activation_code: null,
+      });
       const token = jwt.sign({ username: updatedUser.username, id: updatedUser.id }, secretKey);
       return res.status(200).send({
         userData: getUserFields(updatedUser),
@@ -113,7 +116,8 @@ class AuthController {
     try {
       const { id, hashPassword } = res.locals.userData;
       const user = await UserModel.query().findById(id);
-      await user.$query().updateAndFetch({ password: hashPassword });
+      await user.$query().updateAndFetch({ password: hashPassword,
+        restore_password_code: UserModel.generateCode() });
       return res.status(200).json({
         success: 'Your password was reset successfully',
       });

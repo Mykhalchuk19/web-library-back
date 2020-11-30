@@ -13,7 +13,7 @@ class AuthorBookModel extends Model {
     }
     const relatedAuthorsIds = authors.map((author) => author.author_id);
     for (const authorId of authorIds) {
-      const index = relatedAuthorsIds.indexOf(authorId);
+      const index = relatedAuthorsIds.indexOf(parseInt(authorId, 10));
       if (index === -1) {
         // eslint-disable-next-line no-await-in-loop
         await this.addAuthorById(authorId, bookId);
@@ -21,7 +21,8 @@ class AuthorBookModel extends Model {
         delete relatedAuthorsIds[index];
       }
     }
-    await this.deleteAuthorsByIds(relatedAuthorsIds);
+    const idsForDelete = relatedAuthorsIds.filter(Boolean);
+    await this.deleteAuthorsByIds(idsForDelete);
   }
 
   static async addAuthorById (id, bookId) {

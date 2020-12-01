@@ -3,6 +3,7 @@ const actions = require('./actions');
 const modules = require('./modules');
 const roleNames = require('./roleNames');
 const userStatuses = require('./userStatuses');
+const imagesTypes = require('./imagesTypes');
 
 module.exports = {
   roles,
@@ -10,4 +11,5 @@ module.exports = {
   modules,
   roleNames,
   userStatuses,
+  imagesTypes,
 };

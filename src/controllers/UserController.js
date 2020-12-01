@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { not } = require('ramda');
 const { helpers } = require('../utils');
-const { UserModel } = require('../models');
+const { UserModel, FileModel } = require('../models');
 
 const { getUserFields } = helpers;
 
@@ -74,6 +74,24 @@ class UserController {
     } catch (error) {
       console.log(error);
       return res.status(400).json({ error: 'User is not exists' });
+    }
+  }
+
+  static async uploadAvatar (req, res) {
+    try {
+      const { id, file, avatar } = res.locals;
+      if (avatar) {
+        await FileModel.removeFile(avatar);
+      }
+      const fileId = await FileModel.addFile(file, id);
+      await UserModel.query().updateAndFetchById(id, { avatar: fileId });
+      const userData = await UserModel.getUserWithPermissions(id);
+      return res.status(200).send({
+        userData,
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(400).json({ error: 'Something went wrong' });
     }
   }
 

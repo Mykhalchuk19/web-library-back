@@ -1,7 +1,9 @@
 require('dotenv').config();
 const { not } = require('ramda');
+const path = require('path');
 
 const { UserModel } = require('../models');
+const { imagesTypes } = require('../constants');
 
 const updateUserMiddleware = async (req, res, next) => {
   const { username, firstname, lastname, email, type } = req.body;
@@ -41,8 +43,21 @@ const deleteUserMiddleware = async (req, res, next) => {
   return next();
 };
 
+const uploadAvatarMiddleware = async (req, res, next) => {
+  const { avatar } = req.body;
+  const { file } = res.locals;
+  const { originalname: original } = file;
+  const expansion = path.extname(original).slice(1);
+  if (imagesTypes.indexOf(expansion) !== -1) {
+    res.locals.avatar = avatar;
+    return next();
+  }
+  return res.status(400).json({ error: 'Allow only svg, png, jpg and jpeg formats' });
+};
+
 module.exports = {
   updateUserMiddleware,
   updateProfileMiddleware,
   deleteUserMiddleware,
+  uploadAvatarMiddleware,
 };

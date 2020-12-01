@@ -8,8 +8,27 @@ class UserModel extends Model {
     return 'users';
   }
 
+  static get relationMappings () {
+    const FileModel = require('./FileModel');
+    return {
+      file: {
+        relation: Model.HasOneRelation,
+        modelClass: FileModel,
+        join: {
+          from: 'users.avatar',
+          to: 'files.id',
+        },
+      },
+    };
+  }
+
   static async getUserWithPermissions (id) {
-    const user = await this.query().findById(id);
+    const user = await this.query()
+      .findById(id)
+      .withGraphFetched('file')
+      .modifyGraph('file', (builder) => {
+        builder.select('filename');
+      });
     const { type } = user;
     const permissions = this.getPermissions(type);
     return {

@@ -56,7 +56,11 @@ class UserModel extends Model {
 
   static async getUsers (currentLimit, q) {
     const query = this.query()
-      .select('id', 'username', 'firstname', 'lastname', 'email', 'type', 'status');
+      .select('id', 'username', 'firstname', 'lastname', 'email', 'type', 'status')
+      .withGraphFetched('file')
+      .modifyGraph('file', (builder) => {
+        builder.select('filename');
+      });
     if (q && q.length !== 0) {
       query.whereRaw(`username LIKE '%${q}%'`);
     }

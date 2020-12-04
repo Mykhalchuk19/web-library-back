@@ -2,6 +2,8 @@ const bcrypt = require('bcrypt');
 const { UserModel } = require('../models');
 const { userStatuses } = require('../constants');
 
+exports.seed = (knex) => knex('users').where('username', 'superadmin').delete();
+
 exports.seed = (knex) => knex('users').insert({ username: 'superadmin',
   firstname: 'superadmin',
   lastname: 'superadmin',

@@ -56,14 +56,14 @@ class AuthController {
   static async activateAccount (req, res) {
     try {
       const { id } = res.locals.userData;
-      const user = await UserModel.query().findById(id);
-      const updatedUser = await user.$query().updateAndFetch({
+      await UserModel.query().updateAndFetchById(id, {
         status: userStatuses.ACTIVE,
         activation_code: null,
       });
-      const token = jwt.sign({ username: updatedUser.username, id: updatedUser.id }, secretKey);
+      const userData = await UserModel.getUserWithPermissions(id);
+      const token = jwt.sign({ username: userData.username, id: userData.id }, secretKey);
       return res.status(200).send({
-        userData: getUserFields(updatedUser),
+        userData,
         token,
       });
     } catch (error) {
@@ -76,9 +76,10 @@ class AuthController {
 
   static async authenticateUser (req, res) {
     try {
-      const { user, token } = res.locals.userData;
+      const { id, token } = res.locals.userData;
+      const userData = await UserModel.getUserWithPermissions(id);
       return res.status(200).send({
-        userData: getUserFields(user),
+        userData,
         token,
       });
     } catch (error) {

@@ -86,7 +86,7 @@ const authUserMiddleware = async (req, res, next) => {
   }
   const token = jwt.sign({ username, id: user.id }, secretKey);
   res.locals.userData = {
-    user,
+    id: user.id,
     token,
   };
   return next();

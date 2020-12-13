@@ -28,7 +28,8 @@ const checkBookFields = async (req, res, next) => {
     publishing_house: publishingHouse,
     edition,
     series,
-    category_id: typeof parseInt(categoryId, 10) !== 'number' ? null : categoryId,
+    // eslint-disable-next-line no-restricted-globals
+    category_id: isNaN(parseInt(categoryId, 10)) ? null : categoryId,
   };
   res.locals.authorIds = authorIds.trim().split(',').filter((id) => id !== '' && typeof parseInt(id, 10) === 'number');
   return next();

@@ -14,6 +14,7 @@ const knexFile = require('./knexfile');
 const knex = Knex(knexFile.development);
 Model.knex(knex);
 
+app.use('/apidoc', express.static('apidoc'));
 app.use(bodyParser.urlencoded({
   extended: true,
 }));

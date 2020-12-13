@@ -95,7 +95,7 @@ const authUserMiddleware = async (req, res, next) => {
 const auth = async (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) {
-    return res.status(403).json({
+    return res.status(401).json({
       error: 'You are not authorized',
     });
   }

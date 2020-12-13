@@ -5,13 +5,15 @@
   "license": "ISC",
   "engines": {
     "node": "12.19.0",
-    "yarn": "1.22.5"
+    "yarn": "1.22.10"
   },
   "scripts": {
     "start": "node index.js",
-    "lint": "eslint './**/*.js'"
+    "lint": "eslint './**/*.js'",
+    "doc": "apidoc -f \"./src/routes/.*\\\\.js$\" -i ./  -o apidoc/"
   },
   "dependencies": {
+    "apidoc": "^0.25.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -37,5 +39,9 @@
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
     "husky": "^4.2.5"
+  },
+  "apidoc": {
+    "title": "Web-library API",
+    "url" : "http://localhost:3339"
   }
 }

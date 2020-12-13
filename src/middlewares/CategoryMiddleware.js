@@ -30,6 +30,10 @@ const updateCategoryMiddleware = async (req, res, next) => {
   if (not(title)) {
     return res.status(400).json({ error: 'You should input title of category' });
   }
+  const category = await CategoryModel.query().findOne({ title });
+  if (category) {
+    return res.status(400).json({ error: 'Title should be unique' });
+  }
   res.locals.categoryData = {
     title,
     short_description: shortDescription,

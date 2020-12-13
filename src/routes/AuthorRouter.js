@@ -94,7 +94,6 @@ const { createAuthorMiddleware, updateAuthorMiddleware } = AuthorMiddleware;
  *       }
  *     }
  */
-
 router.post(
   '/create', jsonParser,
   auth,
@@ -193,7 +192,6 @@ router.post(
  *       }
  *     }
  */
-
 router.get('/', jsonParser, auth, isPermission(modules.AUTHORS, actions.READ), getAuthorsList);
 
 /**
@@ -202,7 +200,7 @@ router.get('/', jsonParser, auth, isPermission(modules.AUTHORS, actions.READ), g
  * @apiName Update author
  * @apiGroup Authors
  *
- * @apiParam {Number} id Id name of author
+ * @apiParam {Number} id Id of author
  * @apiParam {String} firstname First name of author
  * @apiParam {String} lastname Last name of author
  *
@@ -283,7 +281,6 @@ router.get('/', jsonParser, auth, isPermission(modules.AUTHORS, actions.READ), g
  *       }
  *     }
  */
-
 router.put(
   '/:id',
   jsonParser,
@@ -299,7 +296,7 @@ router.put(
  * @apiName Delete author
  * @apiGroup Authors
  *
- * @apiParam {Number} id Id name of author
+ * @apiParam {Number} id Id of author
  *
  * @apiSuccess {number} author Author id.
  *
@@ -355,7 +352,6 @@ router.put(
  *       }
  *     }
  */
-
 router.delete('/:id', jsonParser, auth, isPermission(modules.AUTHORS, actions.DELETE), deleteAuthor);
 
 /**
@@ -364,7 +360,7 @@ router.delete('/:id', jsonParser, auth, isPermission(modules.AUTHORS, actions.DE
  * @apiName Get authors for autocomplete
  * @apiGroup Authors
  *
- * @apiParam {Number} id Id name of author
+ * @apiParam {Number} id Id of author
  * @apiParam {String} q String for search
  *
  * @apiSuccess {Array[Object]} autocomplete List of authors for autocomplete.
@@ -430,7 +426,6 @@ router.delete('/:id', jsonParser, auth, isPermission(modules.AUTHORS, actions.DE
  *        }
  *     }
  */
-
 router.get('/autocomplete', jsonParser, auth, isPermission(modules.AUTHORS, actions.CREATE), getAuthorsAutocomplete);
 
 module.exports = router;

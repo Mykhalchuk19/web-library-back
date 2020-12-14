@@ -20,8 +20,6 @@ const checkBookFields = async (req, res, next) => {
     authors: authorIds,
   } = req.body;
   if (!title || title.length === 0) return res.status(400).json({ error: 'Title is required' });
-  console.log(categoryId);
-  console.log(parseInt(categoryId, 10));
   res.locals.book = {
     title,
     short_description: shortDescription,
@@ -33,7 +31,7 @@ const checkBookFields = async (req, res, next) => {
     // eslint-disable-next-line no-restricted-globals
     category_id: isNaN(parseInt(categoryId, 10)) ? null : categoryId,
   };
-  res.locals.authorIds = authorIds.trim().split(',').filter((id) => id !== '' && typeof parseInt(id, 10) === 'number');
+  res.locals.authorIds = authorIds ? authorIds.trim().split(',').filter((id) => id !== '' && typeof parseInt(id, 10) === 'number') : [];
   return next();
 };
 

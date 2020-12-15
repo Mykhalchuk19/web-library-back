@@ -6,6 +6,7 @@ const Knex = require('knex');
 const { Model } = require('objection');
 const multer = require('multer');
 const randomstring = require('randomstring');
+const fs = require('fs');
 const { UserRouter, AuthRouter, CategoryRouter, BookRouter, AuthorRouter } = require('./src/routes');
 
 const app = express();
@@ -24,7 +25,9 @@ app.use(express.static(path.join(__dirname, 'uploads')));
 app.use(multer({
   // dest: 'uploads',
   storage: multer.diskStorage({ destination: (req, file, cb) => {
-    cb(null, `${__dirname}/uploads/`);
+    const pathUploads = './uploads/';
+    fs.mkdirSync(pathUploads, { recursive: true });
+    return cb(null, pathUploads);
   },
   filename: (req, file, cb) => {
     console.log(file.originalname);

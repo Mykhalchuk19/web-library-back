@@ -12,7 +12,7 @@ const { UserRouter, AuthRouter, CategoryRouter, BookRouter, AuthorRouter } = req
 const app = express();
 const knexFile = require('./knexfile');
 // for dev you need to use development, for prod - production
-const knex = Knex(knexFile.development);
+const knex = Knex(knexFile.production);
 Model.knex(knex);
 
 app.use('/apidoc', express.static('apidoc'));

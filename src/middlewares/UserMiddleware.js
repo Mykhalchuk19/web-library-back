@@ -25,7 +25,7 @@ const updateProfileMiddleware = async (req, res, next) => {
   const { id } = res.locals;
   const { username, firstname, lastname, email, type, id: requestId } = req.body;
   if (requestId && requestId !== id) {
-    return res.status(403).json({
+    return res.status(401).json({
       error: 'You are not authorized',
     });
   }

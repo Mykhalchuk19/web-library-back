@@ -67,7 +67,13 @@ class UserController {
       const { userData, id } = res.locals;
       const user = await UserModel.query().findById(id);
       if (not(user)) return res.status(400).send('User is not exists');
-      const updatedUser = await user.$query().updateAndFetch(userData);
+      const updatedUser = await user
+        .$query()
+        .updateAndFetch(userData)
+        .withGraphFetched('file')
+        .modifyGraph('file', (builder) => {
+          builder.select('filename');
+        });
       const permissions = UserModel.getPermissions(updatedUser.type);
       return res.status(200).send({
         userData: {
